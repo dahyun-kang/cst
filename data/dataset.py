@@ -7,7 +7,7 @@ from data.pascal import DatasetPASCAL
 from data.coco import DatasetCOCO
 
 
-class FSCSDatasetModule(LightningDataModule):
+class FSCSDatasetModule(LightningDataModule): # LightningDataModule 상속받음
     """
     A LightningDataModule for FS-CS benchmark
     """
@@ -29,7 +29,7 @@ class FSCSDatasetModule(LightningDataModule):
 
         self.transforms_aug = []
 
-    def train_dataloader(self):
+    def train_dataloader(self): # PyTorch Lightning의 datamodule에서 train 데이터로더 오버라이딩
         dataset = self.datasets[self.args.benchmark](self.datapath,
                                                      fold=self.args.fold,
                                                      transform=self.transform,
@@ -40,7 +40,7 @@ class FSCSDatasetModule(LightningDataModule):
         dataloader = DataLoader(dataset, batch_size=self.args.batchsize, shuffle=True, num_workers=8)
         return dataloader
 
-    def val_dataloader(self):
+    def val_dataloader(self): # PyTorch Lightning의 datamodule에서 val 데이터로더 오버라이딩
         dataset = self.datasets[self.args.benchmark](self.datapath,
                                                      fold=self.args.fold,
                                                      transform=self.transform,
@@ -50,5 +50,5 @@ class FSCSDatasetModule(LightningDataModule):
         dataloader = DataLoader(dataset, batch_size=1, shuffle=False, num_workers=8)
         return dataloader
 
-    def test_dataloader(self):
+    def test_dataloader(self): # val이랑 같은 설정으로 테스트 로더 설정함
         return self.val_dataloader()
